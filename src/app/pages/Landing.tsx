@@ -29,7 +29,7 @@ export function Landing() {
           transition={{ delay: 0.3, duration: 0.8 }}
         >
           <h1 className="text-4xl font-semibold text-white tracking-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif' }}>
-            CBPR Quant
+            CBPR Quant Pro
           </h1>
           <p className="text-[#a3aab8] text-lg leading-relaxed">
             Répondez à la question essentielle :<br />
@@ -46,7 +46,7 @@ export function Landing() {
           <Link to="/auth">
             <motion.button
               onClick={triggerTap}
-              className="w-full bg-[#262730] border border-white/15 text-white py-4 px-6 rounded-2xl font-medium text-lg shadow-lg shadow-black/30 relative overflow-hidden"
+              className="w-full bg-blue-500 text-white py-4 px-6 rounded-2xl font-medium text-lg shadow-lg shadow-blue-500/25 relative overflow-hidden"
               whileHover={{ scale: 1.02, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.45)' }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}

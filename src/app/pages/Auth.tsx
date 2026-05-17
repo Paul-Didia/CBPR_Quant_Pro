@@ -28,8 +28,9 @@ async function isEmailAuthorized(email: string) {
     console.error('Organization member access check error:', organizationMemberError);
   }
 
-  if (organizationMember?.id) {
-    return true;
+  if (!organizationMember?.id) {
+    console.warn(`Email ${safeEmail} is not an organization member.`);
+    return false;
   }
 
   const { data: userProfile, error: userProfileError } = await supabase
@@ -348,7 +349,7 @@ export function Auth() {
             <motion.button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-[#262730] border border-white/15 text-white py-3.5 rounded-2xl font-semibold shadow-lg shadow-black/30 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-blue-500 text-white py-3.5 rounded-2xl font-semibold shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               whileHover={!isLoading ? { scale: 1.02, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.45)' } : {}}
               whileTap={!isLoading ? { scale: 0.98 } : {}}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
