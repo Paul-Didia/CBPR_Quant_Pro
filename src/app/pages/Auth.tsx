@@ -212,7 +212,7 @@ export function Auth() {
 
         {/* Formulaire */}
         <motion.div 
-          className="bg-[#111827] rounded-3xl p-6 shadow-2xl shadow-black/30 border border-white/10"
+          className="rounded-3xl p-6 shadow-2xl shadow-black/30 border border-white/10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
