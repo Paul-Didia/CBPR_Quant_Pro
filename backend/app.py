@@ -35,6 +35,7 @@ SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
 SUPABASE_MACRO_TABLE = os.getenv("SUPABASE_MACRO_TABLE", "macro_market_status")
 DEV_DEFAULT_PLAN = os.getenv("DEV_DEFAULT_PLAN", "quant").strip().lower() or "quant"
 ANALYSIS_MODELS = {"cbpr", "volatility_breakout", "mean_reversion"}
+APP_VARIANT = os.getenv("APP_VARIANT", "quant").strip().lower() or "quant"
 def get_macro_statuses_from_supabase() -> list[dict[str, Any]]:
     if not SUPABASE_URL:
         raise HTTPException(status_code=503, detail="Supabase URL is not configured")
@@ -115,7 +116,7 @@ ENV = os.getenv("ENV", "dev").strip().lower() or "dev"
 
 frontend_origins_raw = os.getenv(
     "FRONTEND_ORIGIN",
-    "http://localhost:5173,https://quant.cbprcapital.com",
+    "http://localhost:5173,http://localhost:5174,https://quant.cbprcapital.com,https://quantpro.cbprcapital.com",
 )
 frontend_origins = []
 for origin in frontend_origins_raw.split(","):
@@ -126,10 +127,17 @@ for origin in frontend_origins_raw.split(","):
 if "https://quant.cbprcapital.com" not in frontend_origins:
     frontend_origins.append("https://quant.cbprcapital.com")
 
-if ENV != "production" and "http://localhost:5173" not in frontend_origins:
-    frontend_origins.append("http://localhost:5173")
+if "https://quantpro.cbprcapital.com" not in frontend_origins:
+    frontend_origins.append("https://quantpro.cbprcapital.com")
+
+if ENV != "production":
+    if "http://localhost:5173" not in frontend_origins:
+        frontend_origins.append("http://localhost:5173")
+    if "http://localhost:5174" not in frontend_origins:
+        frontend_origins.append("http://localhost:5174")
 
 print(f"[BOOT] ENV={ENV}")
+print(f"[BOOT] APP_VARIANT={APP_VARIANT}")
 print(f"[BOOT] Allowed CORS origins={frontend_origins}")
 
 app.add_middleware(
@@ -408,7 +416,11 @@ def enforce_symbol_access(
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "app": APP_VARIANT,
+        "backend": "cbpr-quant-api",
+    }
 
 
 # Macro status route
